@@ -1,0 +1,24 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: flux-test-app-psp
+  namespace: staging
+  annotations:
+    fluxcd.io/automated: "true"
+    filter.fluxcd.io/chart-image: glob:flux-test-app*
+spec:
+  interval: 1m
+  releaseName: flux-test-app-psp
+  chart:
+    spec:
+      chart: charts/flux-test-app
+      sourceRef:
+        kind: GitRepository
+        name: flux-test-app-psp
+        namespace: flux-system
+      valuesFiles:
+        #- ./values.yaml
+        - ./charts/flux-test-app/values-staging.yaml
+  test:
+    enable: false
+  
